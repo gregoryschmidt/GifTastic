@@ -1,0 +1,33 @@
+<!-- API KEY: 1W6DGYsAI4ofTNPzEidHna71TioWfPTG -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Politics GifTastic</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Politics Giftastic</h1>
+    <!-- Rendered Buttons will get Dumped Here  -->
+    <div id="buttons-view"></div>
+
+    <form id="politics-form">
+      <label for="gif-input">Add a politician or politics term</label>
+      <input type="text" id="politics-input">
+      <br>
+
+      <!-- Button triggers new politician/politics term to be added -->
+      <input id="add-politics" type="submit" value="Add a politician or politics term">
+    </form>
+    <!-- Gifs will Get Dumped Dere -->
+    <div id="politics-view"></div>
+    </div>
+</body>
+<script>
+    var topics = ["barack obama", "donald trump", "bernie sanders", "hillary clinton", "nancy pelosi", "mitch mcconnell", "steve bannon", "republican", "democrat", "shutdown"]
+</script>
+</html>
