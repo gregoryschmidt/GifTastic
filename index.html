@@ -1,6 +1,6 @@
-<!-- API KEY: 1W6DGYsAI4ofTNPzEidHna71TioWfPTG -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +9,118 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
+
 <body>
-<div class="container">
-    <h1>Politics Giftastic</h1>
-    <!-- Rendered Buttons will get Dumped Here  -->
-    <div id="buttons-view"></div>
-
-    <form id="politics-form">
-      <label for="gif-input">Add a politician or politics term</label>
-      <input type="text" id="politics-input">
-      <br>
-
-      <!-- Button triggers new politician/politics term to be added -->
-      <input id="add-politics" type="submit" value="Add a politician or politics term">
-    </form>
-    <!-- Gifs will Get Dumped Dere -->
-    <div id="politics-view"></div>
+    <div class="jumbotron">
+        <h1><strong>Politics Giftastic</strong></h1>
     </div>
+    
+    <div class="container">
+        <div id="display-buttons"><br></div>
+        <div>
+            <form id="form"><br>
+                <label for="user-input">Enter a politician or politics term</label>
+                <br>
+                <input type="text" id="user-input">
+                <input id="submitPress" type="submit" value="Submit" class="btn btn-default">
+            </form>
+        </div>
+
+        <div id="display-images"></div>
+
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            var topics = ["barack obama", "donald trump", "bernie sanders", "hillary clinton",
+                "nancy pelosi", "mitch mcconnell"
+            ];
+
+            function displayImg() {
+
+                $("#display-images").empty();
+                var input = $(this).attr("data-name");
+                var limit = 10;
+                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + input + "&limit=" + limit +
+                    "&api_key=1W6DGYsAI4ofTNPzEidHna71TioWfPTG";
+
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                }).done(function (response) {
+
+                    for (var j = 0; j < limit; j++) {
+
+                        var displayDiv = $("<div>");
+                        displayDiv.addClass("holder");
+
+                        var image = $("<img>");
+                        image.attr("src", response.data[j].images.original_still.url);
+                        image.attr("data-still", response.data[j].images.original_still.url);
+                        image.attr("data-animate", response.data[j].images.original.url);
+                        image.attr("data-state", "still");
+                        image.attr("class", "gif");
+                        displayDiv.append(image);
+
+                        var rating = response.data[j].rating;
+                        console.log(response);
+                        var pRating = $("<p>").text("Rating: " + rating);
+                        displayDiv.append(pRating)
+
+                        $("#display-images").append(displayDiv);
+                    }
+                });
+            }
+
+            function renderButtons() {
+
+                $("#display-buttons").empty();
+
+                for (var i = 0; i < topics.length; i++) {
+
+                    var newButton = $("<button>")
+                    newButton.attr("class", "btn btn-primary");
+                    newButton.attr("id", "input")
+                    newButton.attr("data-name", topics[i]);
+                    newButton.text(topics[i]);
+                    $("#display-buttons").append(newButton);
+                }
+            }
+
+            function imageChangeState() {
+
+                var state = $(this).attr("data-state");
+                var animateImage = $(this).attr("data-animate");
+                var stillImage = $(this).attr("data-still");
+
+                if (state == "still") {
+                    $(this).attr("src", animateImage);
+                    $(this).attr("data-state", "animate");
+                } else if (state == "animate") {
+                    $(this).attr("src", stillImage);
+                    $(this).attr("data-state", "still");
+                }
+            }
+
+            $("#submitPress").on("click", function () {
+
+                var input = $("#user-input").val().trim();
+                form.reset();
+                topics.push(input);
+
+                renderButtons();
+
+                return false;
+            })
+
+            renderButtons();
+
+            $(document).on("click", "#input", displayImg);
+            $(document).on("click", ".gif", imageChangeState);
+        });
+    </script>
 </body>
-<script>
-    var topics = ["barack obama", "donald trump", "bernie sanders", "hillary clinton", "nancy pelosi", "mitch mcconnell", "steve bannon", "republican", "democrat", "shutdown"]
-</script>
+
 </html>
